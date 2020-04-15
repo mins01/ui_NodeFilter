@@ -15,11 +15,13 @@ var NodeFilter = (function(){
     this.box_selector = box_selector;
   }
   NodeFilter.prototype = {
+    "debug":false,
     "box_selector":'',
     "shown_className":'NF-shown',
     "hidden_className":'NF-hidden',
     "item_className":'NF-item',
     "key_pattern":"[data-key*='{{sh}}']",
+    "last_selector":"",
     filter:function(key){
       key = key.trim();
       if(key.length>0){
@@ -30,23 +32,45 @@ var NodeFilter = (function(){
         }
         var sh0 = shs.join('');
         // var sh1 = ":not("+shs.join('):not(')+")";
-
+        //-- 찾을 selecotor 만들기
+        var s0 = this.box_selector+" ."+this.item_className+sh0;
+        if(this.last_selector == s0){
+          if(this.debug){
+            console.log('SKIP','key',key,'last_selector',this.last_selector);
+          }
+          return;
+        }
+        //-- 전부 감추기
         var s1 = this.box_selector+" ."+this.item_className;
         // console.log(s1);
         var els1 = document.querySelectorAll(s1);
         for(var i=0,m=els1.length;i<m;i++){
           els1[i].classList.replace(this.shown_className,this.hidden_className);
         }
+        //-- shown 처리
+        this.last_selector = s0
+        if(this.debug){
+          console.log('SELECTOR','key',key,'last_selector',this.last_selector);
+        }
+        var els0 = document.querySelectorAll(this.last_selector);
 
-        var s0 = this.box_selector+" ."+this.item_className+sh0;
-        var els0 = document.querySelectorAll(s0);
         for(var i=0,m=els0.length;i<m;i++){
           els1[i].classList.replace(this.hidden_className,this.shown_className);
         }
 
       }else{
-        var s0 = this.box_selector+" ."+this.item_className+"."+this.hidden_className;
-        var els0 = document.querySelectorAll(s0);
+        s0 = this.box_selector+" ."+this.item_className+"."+this.hidden_className;
+        if(this.last_selector == s0){
+          if(this.debug){
+            console.log('SKIP','key',key,'last_selector',this.last_selector);
+          }
+          return;
+        }
+        this.last_selector = s0
+        if(this.debug){
+          console.log('RESET','key',key,'last_selector',this.last_selector);
+        }
+        var els0 = document.querySelectorAll(this.last_selector );
         for(var i=0,m=els0.length;i<m;i++){
           els0[i].classList.remove(this.hidden_className);
           els0[i].classList.add(this.shown_className);
