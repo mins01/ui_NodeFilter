@@ -36,13 +36,15 @@ var NodeFilter = (function(){
         var s0 = this.box_selector+" ."+this.item_className+sh0;
         if(this.last_selector == s0){
           if(this.debug){
-            console.log('SKIP','key',key,'last_selector',this.last_selector);
+            console.log('SKIP','key',key,'selector',this.last_selector);
           }
           return;
         }
         //-- 전부 감추기
         var s1 = this.box_selector+" ."+this.item_className;
-        // console.log(s1);
+        if(this.debug){
+          console.log('CLEAR','key',key,'selector',s1);
+        }
         var els1 = document.querySelectorAll(s1);
         for(var i=0,m=els1.length;i<m;i++){
           els1[i].classList.replace(this.shown_className,this.hidden_className);
@@ -50,25 +52,25 @@ var NodeFilter = (function(){
         //-- shown 처리
         this.last_selector = s0
         if(this.debug){
-          console.log('SELECTOR','key',key,'last_selector',this.last_selector);
+          console.log('SELECTOR','key',key,'selector',this.last_selector);
         }
         var els0 = document.querySelectorAll(this.last_selector);
 
         for(var i=0,m=els0.length;i<m;i++){
-          els1[i].classList.replace(this.hidden_className,this.shown_className);
+          els0[i].classList.replace(this.hidden_className,this.shown_className);
         }
 
       }else{
         s0 = this.box_selector+" ."+this.item_className+"."+this.hidden_className;
         if(this.last_selector == s0){
           if(this.debug){
-            console.log('SKIP','key',key,'last_selector',this.last_selector);
+            console.log('SKIP','key',key,'selector',this.last_selector);
           }
           return;
         }
         this.last_selector = s0
         if(this.debug){
-          console.log('RESET','key',key,'last_selector',this.last_selector);
+          console.log('RESET','key',key,'selector',this.last_selector);
         }
         var els0 = document.querySelectorAll(this.last_selector );
         for(var i=0,m=els0.length;i<m;i++){
