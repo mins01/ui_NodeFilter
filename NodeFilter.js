@@ -47,7 +47,13 @@ var NodeFilter = (function(){
         }
         var els1 = document.querySelectorAll(s1);
         for(var i=0,m=els1.length;i<m;i++){
-          els1[i].classList.replace(this.shown_className,this.hidden_className);
+          if(els1[i].classList.replace){ //IE11 호환을 위해서 ...IEQT
+            els1[i].classList.replace(this.shown_className,this.hidden_className);
+          }else{
+            els1[i].classList.remove(this.shown_className);
+            els1[i].classList.add(this.hidden_className);
+          }
+
         }
         //-- shown 처리
         this.last_selector = s0
@@ -57,7 +63,12 @@ var NodeFilter = (function(){
         var els0 = document.querySelectorAll(this.last_selector);
 
         for(var i=0,m=els0.length;i<m;i++){
-          els0[i].classList.replace(this.hidden_className,this.shown_className);
+          if(els0[i].classList.replace){ //IE11 호환을 위해서 ...IEQT
+            els0[i].classList.replace(this.hidden_className,this.shown_className);
+          }else{
+            els0[i].classList.remove(this.hidden_className);
+            els0[i].classList.add(this.shown_className);
+          }
         }
 
       }else{
